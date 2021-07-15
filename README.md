@@ -21,8 +21,10 @@ version4為TVMC
 * `from_pytorch.py`為模擬將模型加密後再傳給第三方，也就是先用`encrypt.py`將模型加密後存成`encrypted_model.crypt1`，再將這個加密後的檔案  
 給第三方執行。  
 * `from_tensorflow.py`、`from_tflite.py`、`from_onnx.py`、`from_mxnet.py`、為了測試方便，所以直接將model加密，沒有另外寫`encrypt.py`。  
-* 運行*relay.frontend.from_pytorch()* 
-
+* 以`from_tensorflow.py`為例，運行*relay.frontend.from_tensorflow()* 時會進入`python/tvm/relay/frontend/tensorflow.py`裡的*from_tensorflow()* 函式，  
+  在進入函式後就先解密model等必要資訊，然後運行原本的動作後再加密傳回去，所以使用者只會看到回傳後加密後的資訊。
+* *relay.build()* 會進入`python/tvm/relay/build_module.py`裡的*build()* 函式，一樣先解密必要資訊，然後運行原本的動作，但是回傳的是 _enc_list_ 
+ 
 ----------------------
 ### 主要加解密function：
 ```
