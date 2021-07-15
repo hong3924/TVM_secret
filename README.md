@@ -19,11 +19,11 @@ version4為TVMC
 ----------------------
 ### 加密流程：  
 * `from_pytorch.py`為模擬將模型加密後再傳給第三方，也就是先用`encrypt.py`將模型加密後存成`encrypted_model.crypt1`，再將這個加密後的檔案  
-給第三方執行。  
+  給第三方執行。  
 * `from_tensorflow.py`、`from_tflite.py`、`from_onnx.py`、`from_mxnet.py`、為了測試方便，所以直接將model加密，沒有另外寫`encrypt.py`。  
 * 以`from_tensorflow.py`為例，運行*relay.frontend.from_tensorflow()* 時會進入`python/tvm/relay/frontend/tensorflow.py`裡的*from_tensorflow()* 函式，  
   在進入函式後就先解密model等必要資訊，然後運行原本的動作後再加密傳回去，所以使用者只會看到回傳後加密後的資訊。
-* *relay.build()* 會進入`python/tvm/relay/build_module.py`裡的*build()* 函式，一樣先解密必要資訊，然後運行原本的動作，但是原本回傳的**executor_factory** 不好  
+* *relay.build()* 會進入`python/tvm/relay/build_module.py`裡的*build()* 函式，一樣先解密必要資訊，然後運行原本的動作，但是原本回傳的**executor_factory** 不好
   加密，所以改為加密前一步的**tophub_context** ，並回傳一個**enc_list** ，裡面有加密後的各個重要參數。  
 * *graph_executor.Execution()* 是自行撰寫的函式，主要功能是將原本的runtime部分隱藏起來，也包括*build()* 的最後一部份(**tophub_context** )，  
   進入`python/tvm/contrib/graph_executor.py`裡的*Execution()* 函式，先將**enc_list** 裡的參數解密後再跑原先*build()* 裡的**tophub_context** 得到  
