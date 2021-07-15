@@ -23,7 +23,9 @@ version4為TVMC
 * `from_tensorflow.py`、`from_tflite.py`、`from_onnx.py`、`from_mxnet.py`、為了測試方便，所以直接將model加密，沒有另外寫`encrypt.py`。  
 * 以`from_tensorflow.py`為例，運行*relay.frontend.from_tensorflow()* 時會進入`python/tvm/relay/frontend/tensorflow.py`裡的*from_tensorflow()* 函式，  
   在進入函式後就先解密model等必要資訊，然後運行原本的動作後再加密傳回去，所以使用者只會看到回傳後加密後的資訊。
-* *relay.build()* 會進入`python/tvm/relay/build_module.py`裡的*build()* 函式，一樣先解密必要資訊，然後運行原本的動作，但是回傳的是 _enc_list_ 
+* *relay.build()* 會進入`python/tvm/relay/build_module.py`裡的*build()* 函式，一樣先解密必要資訊，然後運行原本的動作，但是原本回傳的**executor_factory** 不好
+  加密，所以加密前一步的tophub_context回傳的是一個enc_list，裡面有加密後的各個重要參數。
+* *graph_executor.Execution()* 是自行撰寫的函式，主要功能是將原本的runtime部分隱藏起來，也包括build的最後一部份
  
 ----------------------
 ### 主要加解密function：
