@@ -27,7 +27,7 @@ version4為TVMC
   所以改為加密前一步的**tophub_context** ，並回傳一個**enc_list** ，裡面有加密後的各個重要參數。  
 * *graph_executor.Execution()* 是自行撰寫的函式，主要功能是將原本的runtime部分隱藏起來，也包括*build()* 的最後一部份(**tophub_context** )，
   進入`python/tvm/contrib/graph_executor.py`裡的*Execution()* 函式，先將**enc_list** 裡的參數解密後再跑原先*build()* 裡的**tophub_context** 得到
-  executor_factory後再產生實例、運行runtime，最後將結果**tvm_output** 回傳。  
+  **executor_factory** 後再產生實例、運行runtime，最後將結果**tvm_output** 回傳。  
  
 ----------------------
 ### 主要加解密function：
