@@ -15,7 +15,7 @@ version4為TVMC
   可以用`time_counter.py`計算和查看個別的平均運行時間。
   
 ### 加密流程：  
-以pytorch為主，
+以pytorch為主，  
 
 ### 主要加解密function：
 ```
