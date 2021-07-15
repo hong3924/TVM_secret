@@ -18,8 +18,10 @@ version4為TVMC
   
 ----------------------
 ### 加密流程：  
-`from_pytorch.py`為模擬將模型加密後再傳給第三方，也就是先用`encrypt.py`將模型加密後存成`encrypted_model.crypt1`，將這個加密後的檔案  
-給別人後
+* `from_pytorch.py`為模擬將模型加密後再傳給第三方，也就是先用`encrypt.py`將模型加密後存成`encrypted_model.crypt1`，再將這個加密後的檔案  
+給第三方執行。  
+* `from_tensorflow.py`、`from_tflite.py`、`from_onnx.py`、`from_mxnet.py`、為了測試方便，所以直接將model加密，沒有另外寫`encrypt.py`。  
+* 運行*relay.frontend.from_pytorch()* 
 
 ----------------------
 ### 主要加解密function：
