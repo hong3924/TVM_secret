@@ -1,4 +1,6 @@
 # TVM_secret
+
+----------------------
 新增tvm_secret資料夾，內有version1 ~ version4  
 version1為加密測試階段  
 version2為加密各frontend之.py檔案  
@@ -14,9 +16,12 @@ version4為TVMC
   為計時結果，記錄每次運行*relay.frontend.from_pytorch()*、*relay.build()*、*graph_executor.Execution()* 之時間，  
   可以用`time_counter.py`計算和查看個別的平均運行時間。
   
+----------------------
 ### 加密流程：  
-以pytorch為主，  
+`from_pytorch.py`為模擬將模型加密後再傳給第三方，也就是先用`encrypt.py`將模型加密後存成`encrypted_model.crypt1`，將這個加密後的檔案  
+給別人後
 
+----------------------
 ### 主要加解密function：
 ```
 ######################################################################
