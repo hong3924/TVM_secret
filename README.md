@@ -7,4 +7,10 @@ version4為TVMC
 
 ----------------------
 ###version2:  
-`rsa_keygen.py`產生rsa key: `rsa_private_key.bin`、`rsa_public_key.pem`  
+1.`rsa_keygen.py`產生rsa key: `rsa_private_key.bin`、`rsa_public_key.pem`。  
+2.`from_pytorch.py`、`from_tensorflow.py`、`from_tflite.py`、`from_onnx.py`、`from_mxnet.py`  
+  為原tutorials/frontend底下的.py檔加上encrypt、decrypt功能、並有計時功能。  
+3.`pytorch_time.txt`、`tensorflow_time.txt`、`tflite_time.txt`、`onnx_time.txt`、`mxnet_time.txt`  
+  為計時結果，記錄每次運行之*relay.frontend.from_pytorch()*、*relay.build()*、*graph_executor.Execution()*時間，  
+  
+  
