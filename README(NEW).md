@@ -119,7 +119,8 @@ def Decrypt(filename):
         wobj.write(data)
 ######################################################################
 ```
-======================
+
+----------------------
 ### version4內容：
 分別對keras、onnx、tensorflow、tflite、pytorch之 TVMC 增加加解密功能。  
 為了方便對照加密後TVMC之結果是否相同，故模型選擇分別為：onnx官方TVMC教學，tflite是拿version3裡的，keras、tflite、pytorch都是官方Tutorials(Compile Deep Learning Models)。  
@@ -162,3 +163,14 @@ python -m tvm.driver.tvmc compile --target "llvm" --model-format tflite --output
 python -m tvm.driver.tvmc run --inputs tflite_cat.npz --output pred_tflite.npz resnet50-tflite-tvm.tar
 python postprocess.py tflite
 ```
+----------------------
+### 檔案功能、流程：  
+1. `encrypt.py` 取得model並進行加密，產生一.npz檔。  
+2. `preprocess.py` 取得圖片並欲處理，存成一.npz檔。  
+3. `tvmc compile` 對應原來的*relay.frontend.from_{TYPE}()*、*relay.build()* ，將產生的三個檔案(mod.so、mod.json、mod.params)加密後存成.tar。  
+4. `tvmc run` 對應原來的*graph_executor.Execution()*
+5. `postprocess.py` 圖片運行tvmc產生的prediction檔案之結果展示。  
+
+----------------------
+### 更改：  
+在`python/tvm/driver/tvmc/frontends.py` 中
