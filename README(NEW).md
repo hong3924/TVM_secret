@@ -124,3 +124,41 @@ def Decrypt(filename):
 分別對keras、onnx、tensorflow、tflite、pytorch之 TVMC 增加加解密功能。  
 為了方便對照加密後TVMC之結果是否相同，故模型選擇分別為：onnx官方TVMC教學，tflite是拿version3裡的，keras、tflite、pytorch都是官方Tutorials(Compile Deep Learning Models)。  
 
+----------------------
+### 指令：  
+```
+#onnx:
+python encrypt.py onnx
+python preprocess.py onnx
+python -m tvm.driver.tvmc compile --target "llvm" --model-format onnx --output resnet50-v2-7-tvm.tar encrypted_model.py
+python -m tvm.driver.tvmc run --inputs imagenet_cat.npz --output predictions.npz resnet50-v2-7-tvm.tar
+python postprocess.py onnx
+
+#keras:
+python encrypt.py keras
+python preprocess.py keras
+python -m tvm.driver.tvmc compile --target "llvm" --model-format keras --output resnet50-keras-tvm.tar enc_keras_mod.py
+python -m tvm.driver.tvmc run --inputs keras_cat.npz --output pred_keras.npz resnet50-keras-tvm.tar
+python postprocess.py keras
+
+#pytorch:
+python encrypt.py torch
+python preprocess.py torch
+python -m tvm.driver.tvmc compile --target "llvm" --model-format pytorch --output resnet18-pytorch-tvm.tar encrypted_model.crypt1
+python -m tvm.driver.tvmc run --inputs pytorch_cat.npz --output pred_pytorch.npz resnet18-pytorch-tvm.tar
+python postprocess.py torch
+
+#tensorflow:
+python encrypt.py tensorflow
+python preprocess.py tensorflow
+python -m tvm.driver.tvmc compile --target "llvm" --model-format pb --output InceptionV1-tensorflow-tvm.tar enc_tensorflow_mod.py
+python -m tvm.driver.tvmc run --inputs tensorflow_eleph.npz --output pred_tensorflow.npz InceptionV1-tensorflow-tvm.tar
+python postprocess.py tensorflow
+
+#tflite:
+python encrypt.py tflite
+python preprocess.py tflite
+python -m tvm.driver.tvmc compile --target "llvm" --model-format tflite --output resnet50-tflite-tvm.tar enc_tflite_mod.py
+python -m tvm.driver.tvmc run --inputs tflite_cat.npz --output pred_tflite.npz resnet50-tflite-tvm.tar
+python postprocess.py tflite
+```
