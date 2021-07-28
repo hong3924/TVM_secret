@@ -168,9 +168,11 @@ python postprocess.py tflite
 1. `encrypt.py` 取得model並進行加密，產生一.npz檔。  
 2. `preprocess.py` 取得圖片並欲處理，存成一.npz檔。  
 3. `tvmc compile` 對應原來的*relay.frontend.from_{TYPE}()*、*relay.build()* ，將產生的三個檔案(mod.so、mod.json、mod.params)加密後存成.tar。  
-4. `tvmc run` 對應原來的*graph_executor.Execution()*
+4. `tvmc run` 對應原來的*graph_executor.Execution()*，將產生的tvm_output存成一.npz檔。  
 5. `postprocess.py` 圖片運行tvmc產生的prediction檔案之結果展示。  
 
 ----------------------
-### 更改：  
-在`python/tvm/driver/tvmc/frontends.py` 中
+### code更動部分：  
+為了能接上有加解密功能的*relay.frontend.from_{TYPE}()* 、*relay.build()* ，所以將傳入的資料都先加密；回傳的資料也先解密，這樣就能運行原來的tvmc，最後再將產生的三個檔案(mod.so、mod.json、mod.params)加密就好。  
+* `python/tvm/driver/tvmc/frontends.py` 五種frontend中的 *relay.frontend.from_{TYPE}()* 都改成吃加密的model和shape，再將得到的**enc_mod**, **enc_tvm_params**解密後再回傳。  
+* `python/tvm/driver/tvmc/compiler.py` *relay.build()* 改成吃加密後的**enc_mod**, **enc_tvm_params**， 將回傳的**enc_list**
