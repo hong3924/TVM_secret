@@ -75,7 +75,49 @@ def Decrypt_1(encrypted_data):
 ```
 ###### 對檔案加密:
 ```
+######################################################################
+import pickle
+import os
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Random import get_random_bytes
 
+def Encrypt_f(filename):         
+        data = ''
+    
+        with open(filename, 'rb') as f:
+            data = f.read()
+        with open('enc_keras_mod.py', 'wb') as out_file:
+
+            recipient_key = RSA.import_key(open('rsa_public_key.pem').read())
+    
+            session_key = get_random_bytes(16)
+            # Encrypt the session key with the public RSA key
+            cipher_rsa = PKCS1_OAEP.new(recipient_key)
+            out_file.write(cipher_rsa.encrypt(session_key))
+            # Encrypt the data with the AES session key
+            cipher_aes = AES.new(session_key, AES.MODE_EAX)
+        
+            ciphertext, tag = cipher_aes.encrypt_and_digest(data)
+            out_file.write(cipher_aes.nonce)
+            out_file.write(tag)
+            out_file.write(ciphertext)
+            
+def Decrypt(filename):
+    code = 'TVM'
+    with open(filename, 'rb') as fobj:
+        private_key = RSA.import_key(open('rsa_private_key.bin').read(), passphrase=code)
+        enc_session_key, nonce, tag, ciphertext = [ fobj.read(x) 
+                                                    for x in (private_key.size_in_bytes(), 
+                                                    16, 16, -1) ]
+        cipher_rsa = PKCS1_OAEP.new(private_key)
+        session_key = cipher_rsa.decrypt(enc_session_key)
+        cipher_aes = AES.new(session_key, AES.MODE_EAX, nonce)
+        data = cipher_aes.decrypt_and_verify(ciphertext, tag)
+
+    with open('decrypt.pkl', 'wb') as wobj:
+        wobj.write(data)
+######################################################################
 ```
 
 ### version2內容：
