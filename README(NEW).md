@@ -175,4 +175,5 @@ python postprocess.py tflite
 ### code更動部分：  
 為了能接上有加解密功能的*relay.frontend.from_{TYPE}()* 、*relay.build()* ，所以將傳入的資料都先加密；回傳的資料也先解密，這樣就能運行原來的tvmc，最後再將產生的三個檔案(mod.so、mod.json、mod.params)加密就好。  
 * `python/tvm/driver/tvmc/frontends.py` 五種frontend中的 *relay.frontend.from_{TYPE}()* 都改成吃加密的model和shape，再將得到的**enc_mod**, **enc_tvm_params**解密後再回傳。  
-* `python/tvm/driver/tvmc/compiler.py` *relay.build()* 改成吃加密後的**enc_mod**, **enc_tvm_params**， 將回傳的**enc_list**
+* `python/tvm/driver/tvmc/compiler.py` *relay.build()* 改成吃加密後的**enc_mod**, **enc_tvm_params**， 將回傳的**enc_list**先解密
+* `python/tvm/driver/tvmc/model.py` line281~300 將三個檔案(mod.so、mod.json、mod.params)加密， line419~426，注意讀檔時資料型態已改變。
