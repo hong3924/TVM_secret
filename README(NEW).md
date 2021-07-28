@@ -122,4 +122,6 @@ def Decrypt(filename):
 ----------------------
 ### version4內容：
 分別對keras、onnx、tensorflow、tflite、pytorch之 TVMC 增加加解密功能。  
+為了方便對照加密後TVMC之結果是否相同，
+故模型選擇分別為：onnx官方TVMC教學，tflite是拿version3裡的，keras、tflite、pytorch都是官方Tutorials(Compile Deep Learning Models)。  
 
